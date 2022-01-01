@@ -1,5 +1,8 @@
 package com.inbobwetrust.controller;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.inbobwetrust.controller.TestParameterGenerator.generate;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
