@@ -41,7 +41,7 @@ jobs:
         IMAGE_BUILD_DIR_PAIR: [ [ 'delivery-info-service', './delivery-info-service' ] ]
     runs-on: ubuntu-latest
     env:
-      MODULE_NAME: delivery-info-service
+      DOCKERHUB_USERNAME: delivery-info-service
 
     steps:
       - uses: actions/checkout@v2
@@ -60,7 +60,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew ${{ MODULE_NAME }}:build
+        run: ./gradlew ${{ env.DOCKERHUB_USERNAME }}:build
 
       - name: Login to Docker Hub
         uses: docker/login-action@v1
