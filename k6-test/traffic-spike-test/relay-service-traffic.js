@@ -2,7 +2,7 @@ import {sleep, check, fail} from 'k6';
 import http from 'k6/http';
 
 
-const baseUrl = "http://alb-delivery-relay-service-local.ap-northeast-2.elb.amazonaws.com";
+const baseUrl = "http://alb-delivery-relay-service-1071471430.ap-northeast-2.elb.amazonaws.com";
 const shopPath = baseUrl + "/relay/v1/shop/";
 const agencyPath = baseUrl + "/relay/v1/agency/";
 const UNIT = 500; // should be 1000
