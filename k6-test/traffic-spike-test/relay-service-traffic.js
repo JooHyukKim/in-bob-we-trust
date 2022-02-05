@@ -2,10 +2,10 @@ import {sleep, check, fail} from 'k6';
 import http from 'k6/http';
 
 
-const baseUrl = "http://alb-delivery-relay-service-localhost.ap-northeast-2.elb.amazonaws.com";
+const baseUrl = "http://alb-delivery-relay-service-local.ap-northeast-2.elb.amazonaws.com";
 const shopPath = baseUrl + "/relay/v1/shop/";
 const agencyPath = baseUrl + "/relay/v1/agency/";
-const UNIT = 100; // should be 1000
+const UNIT = 500; // should be 1000
 const ratio = 0.4;
 const MAX_TARGET = parseInt(100 * UNIT * 0.4);
 const params = {
@@ -17,8 +17,8 @@ const params = {
 
 export let options = {
     stages: [
-        {duration: '10s', target: MAX_TARGET}, // 0부터 맥스타겟까지 올라가기
-        {duration: '20s', target: MAX_TARGET} // 그리고나서 계속 올라가기
+        {duration: '1m', target: MAX_TARGET}, // 0부터 맥스타겟까지 올라가기
+        {duration: '20m', target: MAX_TARGET} // 그리고나서 계속 올라가기
     ],
     thresholds: {
         http_req_failed: ['rate<=0.05'],
