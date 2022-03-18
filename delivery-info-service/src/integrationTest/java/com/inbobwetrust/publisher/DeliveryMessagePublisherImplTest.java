@@ -7,6 +7,7 @@ import static org.mockito.Mockito.times;
 import com.inbobwetrust.domain.Delivery;
 import com.inbobwetrust.repository.DeliveryRepository;
 import java.time.LocalDateTime;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -21,7 +22,6 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.containers.RabbitMQContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -40,8 +40,13 @@ public class DeliveryMessagePublisherImplTest {
 
   @Autowired DeliveryRepository deliveryRepository;
 
-  @Container
-  static RabbitMQContainer container = new RabbitMQContainer("rabbitmq:3.7.25-management-alpine");
+  public static RabbitMQContainer container =
+      new RabbitMQContainer("rabbitmq:3.7.25-management-alpine").withReuse(true);
+
+  @BeforeAll
+  static void beforeAll() {
+    container.start();
+  }
 
   @SpyBean AmqpTemplate amqpTemplate;
 

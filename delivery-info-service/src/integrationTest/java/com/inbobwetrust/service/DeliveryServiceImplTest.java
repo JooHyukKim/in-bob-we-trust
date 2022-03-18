@@ -1,8 +1,5 @@
 package com.inbobwetrust.service;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -14,27 +11,25 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.testcontainers.containers.RabbitMQContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import reactor.test.StepVerifier;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("integration")
-@AutoConfigureWebTestClient
-@AutoConfigureWireMock(port = 0)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@Testcontainers
+@ContextConfiguration
 public class DeliveryServiceImplTest {
 
+  @Container
+  static RabbitMQContainer container = new RabbitMQContainer("rabbitmq:3.7.25-management-alpine");
+
   ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
-
-  private String proxyShopUrl = "/relay/v1/shop";
-
-  private String proxyAgencyUrl = "/relay/v1/agency";
 
   @Autowired private DeliveryService deliveryService;
 
@@ -62,15 +57,6 @@ public class DeliveryServiceImplTest {
     var acceptDelivery = delivery.deepCopy();
     acceptDelivery.setDeliveryStatus(DeliveryStatus.ACCEPTED);
     // when
-    final String testUrl = proxyAgencyUrl + "/" + acceptDelivery.getAgencyId();
-    stubFor(
-        post(urlPathMatching(proxyAgencyUrl + "/.*"))
-            .willReturn(
-                aResponse()
-                    .withStatus(HttpStatus.OK.value())
-                    .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                    .withBody(mapper.writeValueAsString(acceptDelivery))));
-
     deliveryRepository.save(delivery).block();
     deliveryService.acceptDelivery(acceptDelivery).block();
     // then
