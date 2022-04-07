@@ -81,10 +81,8 @@
 - **우아한 중계서비스에 웹소켓이 필요할까?**
     - [웹소켓 WebSocket 에 대해서 알아보자 \(구현, 테스트, 예제, SpringBoot, WebSocket, WebFlux, etc...\)](https://vince-kim.tistory.com/40)
 
-- **뜻깊은 이벤트**
-    - [2년차 개발자의 회고, 우아한 중계서비스 프로젝트의 실제 거인들을 만나다. #우아한중계서비스 #토이프로젝트 #회고 #개발자회고 #F-Lab](https://vince-kim.tistory.com/42)
-
-- **현재 프로젝트의 장애 대응 역량**
+- **메시지큐를 활용한 비동기 통신**
+    - [메시지큐를 활용한 비동기 통신에 대해서 알아보자](https://vince-kim.tistory.com/45)
 
 ### :bicyclist: //Todo : 프로젝트를 통해 해결하려는 궁금증과 문제들
 
